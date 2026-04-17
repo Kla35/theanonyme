@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thé Anonyme</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <main class="card">
+    <h1>Envoyer un message</h1>
+
+    <label for="title">Sujet *</label>
+    <input type="text" id="title" placeholder="Un thé impressionant">
+
+    <label for="message">Message</label>
+    <textarea id="message" placeholder="Le mari de la femme du cousin de la fille du grand père de ma mère a..."></textarea>
+
+    <button id="send-btn" onclick="sendForm()">Envoyer</button>
+
+    <p class="toast" id="toast"></p>
+  </main>
+
+  <script>
+    async function sendForm() {
+      const title = document.getElementById('title').value.trim();
+      const message = document.getElementById('message').value.trim();
+      const toast = document.getElementById('toast');
+      const btn = document.getElementById('send-btn');
+
+      if (!title) { document.getElementById('title').focus(); return; }
+      if (!message) { document.getElementById('message').focus(); return; }
+      
+      btn.disabled = true;
+      btn.textContent = 'Envoi…';
+
+      const res = await fetch('/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title, message })
+      });
+      console.log(res.status)
+      if (res.ok) {
+        document.getElementById('title').value = '';
+        document.getElementById('message').value = '';
+        toast.textContent = '✓ Message envoyé !';
+        toast.className   = 'toast ok';
+        setTimeout(() => toast.className = 'toast', 3000);
+        
+      } else {
+        toast.className   = 'toast err';
+        if(res.status == 429) {
+          toast.textContent = 'Vous avez déjà envoyé un thé il y a moins d\'une minute !';
+        } else {
+          toast.textContent = 'Erreur, veuillez réessayer.';
+        }
+      }
+
+      btn.disabled = false;
+      btn.textContent = 'Envoyer';
+    }
+  </script>
+</body>
+</html>

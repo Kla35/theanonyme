@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Connexion</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <main class="card">
+    <h1>Connexion</h1>
+
+    <form method="POST" action="/login">
+      <label for="password">Mot de passe</label>
+      <input type="password" id="password" name="password" autofocus placeholder="••••••••">
+
+      <button type="submit">Connexion</button>
+
+      {% if error %}
+      <p class="toast err">{{ error }}</p>
+      {% endif %}
+    </form>
+  </main>
+</body>
+</html>
