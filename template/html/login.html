@@ -33,13 +33,10 @@
                 <label for="password" class="form-label">Mot de passe</label>
                 <input type="password" class="form-control" id="password" name="password" autofocus placeholder="••••••••">
               </div>
-              
-
-              <button type="submit" class="btn btn-primary">Connexion</button>
-
               {% if error %}
-              <p class="toast err">{{ error }}</p>
+              <p class="alert alert-danger">{{ error }}</p>
               {% endif %}
+              <button type="submit" class="btn btn-primary">Connexion</button>
             </div>
         </main>
         </div>    
