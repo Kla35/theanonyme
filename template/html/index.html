@@ -66,11 +66,16 @@
       const alert = document.getElementById('alert');
       const btn = document.getElementById('send-btn');
 
-      if (!title) { document.getElementById('title').focus(); return; }
-      if (!message) { document.getElementById('message').focus(); return; }
+      if (!title) { document.getElementById('title').focus();  alert.textContent = 'Ajoutez un titre !'; alert.className   = 'alert alert-danger'; return; }
+      if (title.length > 300) { document.getElementById('title').focus(); alert.textContent = 'Titre trop long ! Veuillez rentrer moins de 300 caractères !'; alert.className   = 'alert alert-danger'; return; }
+      if (!message) { document.getElementById('message').focus();  alert.textContent = 'Ajoutez l\'anecdote !'; alert.className   = 'alert alert-danger'; return;  }
+      if (message.length > 5000) { document.getElementById('title').focus(); alert.textContent = 'Anecdote trop longue !  Veuillez rentrer moins de 5000 caractères !'; alert.className   = 'alert alert-danger'; return; }
       
       btn.disabled = true;
       btn.textContent = 'Envoi…';
+
+      alert.textContent = '';
+      alert.className   = 'alert';
 
       const res = await fetch('/submit', {
         method: 'POST',
