@@ -6,7 +6,7 @@ import math
 from time import gmtime, strftime
 from dotenv import load_dotenv
 from flask import Flask, render_template, request, session, redirect, url_for
-from flask_limiter import Limiter
+from flask_limiter import Limiter, RateLimitExceeded
 from flask_limiter.util import get_remote_address
 
 load_dotenv()
@@ -16,9 +16,11 @@ load_dotenv()
 # Config
 ###
 
-LOGIN_PASSWORD = os.getenv("LOGIN_PASSWORD", secrets.token_hex(64))
-SECRET_KEY     = os.getenv("SECRET_KEY", secrets.token_hex(32))
- 
+LOGIN_PASSWORD  = os.getenv("LOGIN_PASSWORD", secrets.token_hex(64))
+SECRET_KEY      = os.getenv("SECRET_KEY", secrets.token_hex(32))
+TWITCH_USERNAME = os.getenv("TWITCH_USERNAME", "twitchdev")
+WEBSITE_DOMAIN  = os.getenv("WEBSITE_DOMAIN", "localhost")
+
 app = Flask(__name__, template_folder="template", static_folder="static", static_url_path="/static")
 app.secret_key = SECRET_KEY
  
@@ -104,16 +106,21 @@ def submit():
 def messages():
     if not session.get("logged"):
         return redirect(url_for("login"))
-    return render_template("html/messages.html")
+    return render_template("html/messages.html", twitch_username=TWITCH_USERNAME, website_domain=WEBSITE_DOMAIN)
  
  
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
-        if request.form.get("password") == LOGIN_PASSWORD:
-            session["logged"] = True
-            return redirect(url_for("messages"))
-        return render_template("html/login.html", error="Mot de passe incorrect.")
+        try:
+            with limiter.limit("1 per second"):
+            # something expensive
+                if request.form.get("password") == LOGIN_PASSWORD:
+                    session["logged"] = True
+                    return redirect(url_for("messages"))
+                return render_template("html/login.html", error="Mot de passe incorrect.")
+        except RateLimitExceeded:
+            return render_template("html/login.html", error="Cooldown / Veuillez réessayer dans quelques secondes."), 429
     return render_template("html/login.html", error=None)
  
  
