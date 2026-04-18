@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Thé Anonyme</title>
+  <link rel="icon" type="image/png" href="/static/img/theanonyme.png" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
   <link rel="stylesheet" href="/static/css/common.css">
   <link rel="stylesheet" href="/static/css/home.css">
@@ -11,21 +12,22 @@
   <script src="https://kit.fontawesome.com/fff07aaee2.js" crossorigin="anonymous"></script>
 </head>
 <body>
-  
   <main>
     <br/>
+    <!-- Simple header / Maybe I'll merge with all others forms -->
     <header>
-      <div class="container-fluid" style="height: 100%">
-        <div class="row mb-3 text-center" style="height: 100%">
-          <div class="offset-1 col-10 offset-md-2 col-md-8 offset-xxl-3 col-xxl-6" style="height: 100%">
-            <div style="height:100%; width: 100%; background: center / contain no-repeat url('/static/img/theanonyme.png')"></div>
+      <div class="container-fluid fullHeight">
+        <div class="row mb-3 text-center fullHeight">
+          <div class="offset-1 col-10 offset-md-2 col-md-8 offset-xxl-3 col-xxl-6 fullHeight">
+            <div class="logoTheAnonyme"></div>
           </div>    
         </div>
       </div>
     </header>
-    <div class="container-fluid" style="height: 100%">
-      <div class="row mb-3" style="height: 100%">
-        <div class="offset-1 col-10 offset-md-2 col-md-8 offset-xxl-3 col-xxl-6" style="height: 100%">
+    <!-- Warning and Instructions -->
+    <div class="container-fluid fullHeight">
+      <div class="row mb-3 fullHeight">
+        <div class="offset-1 col-10 offset-md-2 col-md-8 offset-xxl-3 col-xxl-6 fullHeight">
           <div class="card">
             <h3 class="text-center">Avant d'effectuer ta contribution, sois sûr.e que :</h3>
             <ul>
@@ -37,8 +39,9 @@
           </div>
         </div>    
       </div>
-      <div class="row mb-3 text-center" style="height: 100%; padding-bottom: 50px;">
-        <div class="offset-1 col-10 offset-md-2 col-md-8 offset-xxl-3 col-xxl-6" style="height: 100%">
+      <!-- Form -->
+      <div class="row mb-3 text-center fullHeight" style="padding-bottom: 50px;">
+        <div class="offset-1 col-10 offset-md-2 col-md-8 offset-xxl-3 col-xxl-6 fullHeight">
           <div id="divForm" class="card">
             <h1>Envoyer un thé</h1>
 
@@ -48,7 +51,7 @@
             </div>
             <div class="mb-3">
               <label for="message" class="form-label">Message *</label>
-              <textarea id="message" class="form-control" placeholder="L'anecdote démarre quand le mari de ma tante du cousin de la fille de mon oncle du grand père de ma mère a..." style="height: 270px;"></textarea>
+              <textarea id="message" class="form-control" placeholder="L'anecdote démarre quand le mari de ma tante du cousin de la fille de mon oncle du grand père de ma mère a..."></textarea>
             </div>
             <p id="alert"></p>
             <button id="send-btn" onclick="sendForm()" class="btn btn-primary">Envoyer</button>
@@ -61,46 +64,49 @@
 
   <script>
     async function sendForm() {
+      //Get DOM element
       const title = document.getElementById('title').value.trim();
       const message = document.getElementById('message').value.trim();
       const alert = document.getElementById('alert');
       const btn = document.getElementById('send-btn');
-
+      // Verify if value in form are correct
       if (!title) { document.getElementById('title').focus();  alert.textContent = 'Ajoutez un titre !'; alert.className   = 'alert alert-danger'; return; }
-      if (title.length > 300) { document.getElementById('title').focus(); alert.textContent = 'Titre trop long ! Veuillez rentrer moins de 300 caractères !'; alert.className   = 'alert alert-danger'; return; }
+      if (title.length > 300) { document.getElementById('title').focus(); alert.textContent = 'Titre trop long ! Veuillez rentrer moins de 300 caractères !'; alert.className = 'alert alert-danger'; return; }
       if (!message) { document.getElementById('message').focus();  alert.textContent = 'Ajoutez l\'anecdote !'; alert.className   = 'alert alert-danger'; return;  }
       if (message.length > 5000) { document.getElementById('title').focus(); alert.textContent = 'Anecdote trop longue !  Veuillez rentrer moins de 5000 caractères !'; alert.className   = 'alert alert-danger'; return; }
-      
+      // Reset button & alert
       btn.disabled = true;
       btn.textContent = 'Envoi…';
-
       alert.textContent = '';
       alert.className   = 'alert';
 
+      // Send Form
       const res = await fetch('/submit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ title, message })
       });
 
+      // Process form return
       if (res.ok) {
+        //If OK / Remove everything and display anecdote id
         document.getElementById('title').value = '';
         document.getElementById('message').value = '';
-        btn.disabled = true;
         let data = await res.json()
         document.getElementById('divForm').innerHTML = `<h2>Votre message a bien été envoyé, merci ! Elle a été référencé en tant qu'anecdote #${data.id}`;
       } else {
-        alert.className   = 'alert alert-danger';
+        // If not OK 
+        // Rearm button
         btn.disabled = false;
         btn.textContent = 'Envoyer';
+        // Display error : Are you a spammer or did the server did something wrong ?
+        alert.className = 'alert alert-danger';
         if(res.status == 429) {
           alert.textContent = 'Vous avez déjà envoyé un thé il y a moins d\'une minute !';
         } else {
           alert.textContent = 'Erreur, veuillez réessayer.';
         }
-      }
-
-      
+      }      
     }
   </script>
 </body>

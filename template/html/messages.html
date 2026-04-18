@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Thé Anonyme - Messages</title>
+  <link rel="icon" type="image/png" href="/static/img/theanonyme.png" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
   <link rel="stylesheet" href="/static/css/common.css">
   <link rel="stylesheet" href="/static/css/messages.css">
@@ -12,18 +13,20 @@
 </head>
 <body>
   <main>
+    <!-- Header -->
     <header>
       <div class="container">
-        <div class="row mb-3 text-center" style="height: 100px"> 
-          <div class="col-0 col-md-2"></div> 
-          <div class="col-8 col-md-8">
+        <div class="row mb-3 text-center" style="height: 100px">
+          <div class="col-8 offset-md-2 col-md-8">
             <div style="height:100%; width: 100%; background: center / contain no-repeat url('/static/img/theanonyme.png')"></div>
           </div> 
           <div class="col-4 col-md-2">
+            <!-- Disconnect Button -->
             <a class="btn btn-danger" href="/logout" role="button"><span>
                   <i class="fa-solid fa-right-from-bracket"></i>
               </span>Déconnexion
             </a>
+            <!-- Show Twitch Chat Button -->
             <button class="btn btn-violet" id="sidebarToggle" onclick="toggleSidebar()">
               <span>
                   <i class="fa-brands fa-twitch"></i>
@@ -34,13 +37,13 @@
           
         </div>
       </div>
-      
-      
-      <h1 style="display:none;">Nombre de thés servis : <span id="counter">0</span></h1>
     </header>
 
+
     <div class="d-flex" id="appWrapper">
+      <!-- Main Content / Anecdote + Pagination -->
       <div class="flex-grow-1" id="mainContent">
+        <!-- Pagniation -->
         <div class="container-flow" style="height: 60px;">
           <div class="row text-center"> 
             <div class="offset-1 col-10" style="display:flex; justify-content: center;">
@@ -64,12 +67,14 @@
             </div>
           </div>
         </div>
+        <!-- Anecdote List -->
         <div class="container-flow overflow-auto" style="height: calc(100% - 60px);">
           <div class="row text-center"> 
             <div class="offset-1 col-10" id="messageList"></div> 
           </div>
         </div>
       </div>
+      <!-- Side Panel / Used to display Twitch Chat -->
       <div id="sidePanel" class="side-panel">
         <div class="side-panel-inner" style="overflow: hidden;">
           <iframe src="https://www.twitch.tv/embed/{{ twitch_username }}/chat?parent={{ website_domain }}"
@@ -83,9 +88,7 @@
 
   <script>
 
-    function toggleSidebar() {
-      document.getElementById('sidePanel').classList.toggle('open');
-    }
+    
 
     let page = 1;
     let newPage = 1; 
@@ -96,7 +99,9 @@
     /*********************
     * Polling & Polling Timer Functions
     **********************/
-    function schedulePoll() {
+
+   // Using timeout instead of interval, because I need to control when poll will be done manually when changing page
+    function schedulePoll() { /* I'm sure there is a way to simplify these 2 functions, but the brain hasn't found yet :( */
       clearTimeout(timer);
         timer = setTimeout(async () => {
             await poll();
@@ -104,45 +109,53 @@
         }, 2000);
     }
 
+    // And so on
     async function triggerPoll(){ /* I'm sure there is a way to simplify these 2 functions, but the brain hasn't found yet :( */
       clearTimeout(timer);
       await poll();
       schedulePoll();
     }
 
+    // Polling 
     async function poll() {
-      // Polling
+      // Gather data from poll URL
       const res  = await fetch(`/poll?page=${newPage}`);
       const data = await res.json();
       // Verify if this is a new page
       if(newPage > data.pagesNumber) {
         newPage = data.pagesNumber;
       }
+      // Loading circle and update actual page
       if (newPage != page) {
+        // Remove all anecdotes, because we are switching page
         document.getElementById('messageList').innerHTML = '';
         page = newPage;
       }
+      // Update pagination
       updatePagination(page, data.pagesNumber);
-      // Verify which message are already on page
+      // Verify which anecdotes are already on page and add new one
       messageIdOnPage = [...document.querySelectorAll("[id^='messageId_']")].map(el => el.getAttribute("value"))
       data.messages.forEach(item => {
         if (!messageIdOnPage.includes(String(item.id))){ appendRow(item); }
       });
-      // Update number of messages
-      document.getElementById('counter').textContent = data.total;
+      // Update number of anecdotes
+      // document.getElementById('counter').textContent = data.total;
     }
  
     /*********************
     * Messages Functions
     **********************/
 
-    function appendRow(item) { 
-      let checkbox = "";
+    function appendRow(item) { //This will need to be better done, I guess... 
+      // Prepare div DOM element
       const divRow = document.createElement('div');
       divRow.setAttribute("id", `cardMessage_${item.id}`);
-      if(item.seen) { divRow.classList.add("alreadySeenMessage"); checkbox="checked" }
       divRow.classList.add('card');
       divRow.classList.add('card-body');
+      // Prepare checkbox status
+      let checkbox = "";
+      if(item.seen) { divRow.classList.add("alreadySeenMessage"); checkbox="checked" }
+      // Add the anecdote HTML to DOM element
       divRow.innerHTML = `
         <div class="container-flow">
           <div class="row mb-3 text-center"> 
@@ -163,7 +176,7 @@
           </div>
         </div>
       `;
- 
+      // Append the new element
       const divMessageList = document.getElementById('messageList');
       divMessageList.appendChild(divRow);
     }
@@ -173,6 +186,7 @@
     **********************/
 
     function switchToPage(pageNumber){
+      // If we ask a new page, we display a false loading circle and we trigger the poll instantly
       if(pageNumber != page){
         newPage = pageNumber;
         document.getElementById('messageList').innerHTML = `
@@ -184,7 +198,8 @@
       }
     }
 
-    function updatePagination(pageNumber, maxPageNumber) {
+    function updatePagination(pageNumber, maxPageNumber) { // Thanks StackOverflow, I wouldn't have found these alone
+      // It's only here to use setPageItem function
       const [lower, actual, higher] = pageNumber === 1 && maxPageNumber === 1
         ? ["...", "1", "..."]
         : getUpperLowerNumberPagination(parseInt(pageNumber), parseInt(maxPageNumber));
@@ -194,7 +209,8 @@
       setPageItem("pageItemHigher", higher);
     }
 
-    function setPageItem(id, value, isActive = false) {
+    function setPageItem(id, value, isActive = false) { // Create a pagination item
+
       const li = document.getElementById(id);
       const a = li.querySelector("a");
       const isDots = value === "...";
@@ -209,14 +225,15 @@
     * Misc Functions
     **********************/
 
-    function getUpperLowerNumberPagination(pageNumber, maxPageNumber){
+    function getUpperLowerNumberPagination(pageNumber, maxPageNumber){ // Thanks StackOverflow, I wouldn't have found these alone
+      // It will only predict the previous, current and next page to display in pagination
       if (pageNumber === 1) return ["...", "1", "2"];
       if (pageNumber === maxPageNumber) return [String(maxPageNumber - 1), String(maxPageNumber), "..."];
       console.log([String(pageNumber - 1), String(pageNumber), String(pageNumber + 1)])
       return [String(pageNumber - 1), String(pageNumber), String(pageNumber + 1)];
     }
 
-    function formatText(str) {
+    function formatText(str) { // Maybe I will cleanup this if it's not necessary
       return String(str)
         .replace(/&/g, '&amp;')
         .replace(/</g, '&lt;')
@@ -224,25 +241,33 @@
         .replace(/"/g, '&quot;');
     }
 
-    function alreadyReadMessage(domElement){
+    function alreadyReadMessage(domElement){ // Let user choose what anecdote are already read, to make sure it didn't lose which one has been already read
+      // Via DOM, find the anecodte id
       const id = domElement.getAttribute("checkboxMessageId");
       const domCard = document.getElementById(`cardMessage_${id}`)
+      // If it's checked, lower the opacity to 0.25 and add a green color
       if(domElement.checked){
         domCard.classList.add("alreadySeenMessage")
       } else {
         domCard.classList.remove("alreadySeenMessage")
       }
+      // Tell the server to remember that
       fetch(`/messages/${id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ seen: domElement.checked })
       });
     }
+
+    function toggleSidebar() { // Open/close the sidebar
+      document.getElementById('sidePanel').classList.toggle('open');
+    }
     
     /*********************
     * Misc Events
     **********************/
 
+    // Change the button triangle if it's opened or closed
     document.addEventListener("show.bs.collapse", e => {
       document.querySelector(`[href='#${e.target.id}']`).textContent = "▲";
     });
@@ -253,9 +278,9 @@
     /*********************
     * General
     **********************/
+   //Launch the timeout polling
     triggerPoll();
 
-    // if(pageId)
   </script>
 </body>
 </html>

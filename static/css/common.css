@@ -22,8 +22,18 @@
 
 /* Common */
 
+.logoTheAnonyme {
+  height:100%; 
+  width: 100%; 
+  background: center / contain no-repeat url('/static/img/theanonyme.png')
+}
+
 .pointer{
   cursor: pointer;
+}
+
+.fullHeight{
+  height: 100%;
 }
 
 /* Body base */

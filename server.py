@@ -77,16 +77,16 @@ def index():
 def submit():
     global listMessages
     global messages_lock
-
+    # Get form data
     data    = request.get_json(force=True, silent=True) or {}
     title   = str(data.get("title", "")).strip()[:300]
     message = str(data.get("message", "")).strip()[:5000]
- 
+    # If it's missing something, tell it
     if not title:
         return {"ok": False, "error": "titre requis"}, 400
     if not message:
         return {"ok": False, "error": "message requis"}, 400
- 
+    # Acquire lock to add the anecdote to list
     with messages_lock:
         new_id = len(listMessages)
         listMessages.append({
@@ -96,44 +96,47 @@ def submit():
             "message": message,
             "seen": False
         })
-
+    # Return 200 and the anecdote id to user
     return jsonify({"ok": True, "id": new_id})
  
 @app.route("/messages/<messageId>", methods=["PATCH"])
 def patchMessages(messageId):
+    global listMessages
+    global messages_lock
+
     # If not logged => Not access
     if not session.get("logged"):
         return {}, 403
     
-    global listMessages
-    global messages_lock
-    
+    # Get data for request
     data    = request.get_json(force=True, silent=True) or {}
     seen   = str(data.get("seen", "")).strip()
- 
+    # Acquire lock to change the seen attribute of anecdote
     with messages_lock:
         listMessages[int(messageId)]["seen"] = True if (seen == "True") else False
-
+    # Return a 200, not really checked in fact
     return jsonify({"ok": True})
 
 @app.route("/messages", methods=["GET"])
 def messages():
+    # If not logged => Not access
     if not session.get("logged"):
         return redirect(url_for("login"))
+    # Render the anecdote page
     return render_template("html/messages.html", twitch_username=TWITCH_USERNAME, website_domain=WEBSITE_DOMAIN)
- 
  
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
         try:
+            # Just to make sure someone is not spamming to discover the password :)
             with limiter.limit("1 per second"):
-            # something expensive
-                if request.form.get("password") == LOGIN_PASSWORD:
+                # Connect and go to anecdote page if the password is good
+                if request.form.get("password") == LOGIN_PASSWORD: # TODO : Maybe should I hash it ? 
                     session["logged"] = True
                     return redirect(url_for("messages"))
                 return render_template("html/login.html", error="Mot de passe incorrect.")
-        except RateLimitExceeded:
+        except RateLimitExceeded: # Someone without the password is spamming and I'm seeing it in the logs eheh
             return render_template("html/login.html", error="Cooldown / Veuillez réessayer dans quelques secondes."), 429
     return render_template("html/login.html", error=None)
  
@@ -176,5 +179,6 @@ if __name__ == "__main__":
         DEBUG_MODE = True
         HOST = "127.0.0.1"
     # DEV AREA #
+    # Launch Flask Server
     app.run(host=HOST, port=SERVER_PORT, debug=DEBUG_MODE, threaded=True)
  
