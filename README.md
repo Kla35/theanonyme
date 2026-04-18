@@ -8,6 +8,12 @@ L'idée est que l'application conserve en mémoire vive, de manière donc éphé
 
 Tout ce paragraphe pour dire que j'avais un peu de temps dans mes vacances, je voulais juste améliorer mes compétences en le faisant (et j'ai appris pas mal de choses sur Python Flask Server)
 
+## Les avantages & les désavantages
+
+| Côtés positifs                                                                                               | Côtés négatifs                                                                                                                                                                                              |
+|--------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| * Permets de tout rassembler dans un endroit <br/>* Permets d'assurer une anonymité des personnes qui participent | * Peut produire l'effet inverse : Sous anonymat, les viewers auront peut-être plus tendance à trauma dump <br/>* La personne utilisant cet espace n'a pas de modération, même si elle ne peut être vu que d'elle |
+
 ## Comment installer ?
 
 * 1/ Clone le repository
@@ -36,6 +42,11 @@ Sometimes, a Twitch streamer called AngleDroit is doing some "tea time" or "goss
 The whole idea is in the app keep anecdotes in RAM, in a way it keep them ephemeral. No other stockage than RAM, at the end of a stream, all disappear.
 
 This whole paragraph just to tell I had some time on my hollyday, I just wanted to improve my skills by doing it (And I learned a lot of things about Python Flask Server)
+
+## Pros & Cons
+| Pros                                                                       | Cons                                                                                                                                                           |
+|----------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| * Gather everything in the same place <br/>* All participants will be anonymous | * Can produce opposite effect : Viewers could maybe more trauma dump <br/>* The one using this space will not have any moderation, even if it's only seen by itself |
 
 ## How to install ?
 
