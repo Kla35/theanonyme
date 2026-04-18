@@ -4,6 +4,7 @@ import secrets
 import math
 import threading
 import zoneinfo
+import json
 
 from time import gmtime, strftime
 from dotenv import load_dotenv
@@ -23,6 +24,8 @@ LOGIN_PASSWORD  = os.getenv("LOGIN_PASSWORD", secrets.token_hex(64))
 SECRET_KEY      = os.getenv("SECRET_KEY", secrets.token_hex(32))
 TWITCH_USERNAME = os.getenv("TWITCH_USERNAME", "twitchdev")
 WEBSITE_DOMAIN  = os.getenv("WEBSITE_DOMAIN", "localhost")
+SERVER_PORT     = os.getenv("SERVER_PORT", 5000)
+DEVMODE         = os.getenv("DEVMODE", False)
 
 app = Flask(__name__, template_folder="template", static_folder="static", static_url_path="/static")
 app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1)
@@ -32,51 +35,14 @@ app.secret_key = SECRET_KEY
 # Var
 ###
 messages_lock = threading.Lock()
-listMessages = [{"id": 0, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message", "seen": True},
-                {"id": 1, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message", "seen": False},
-                {"id": 2, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message", "seen": False},
-                {"id": 3, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message", "seen": False},
-                {"id": 4, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message", "seen": False},
-                {"id": 5, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message", "seen": False},
-                {"id": 6, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message", "seen": False},
-                {"id": 7, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message", "seen": False},
-                {"id": 8, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message", "seen": False},
-                {"id": 9, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message", "seen": False},
-                {"id": 10, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message", "seen": False},
-                {"id": 11, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message", "seen": False},
-                {"id": 12, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message", "seen": False},
-                {"id": 13, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message", "seen": False},
-                {"id": 14, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message", "seen": False},
-                {"id": 15, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message", "seen": False},
-                {"id": 16, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message", "seen": False},
-                {"id": 17, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message", "seen": False},
-                {"id": 18, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message", "seen": False},
-                {"id": 19, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message", "seen": False},
-                {"id": 20, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message", "seen": False},
-                {"id": 21, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message", "seen": False},
-                {"id": 22, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message", "seen": False},
-                {"id": 23, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message", "seen": False},
-                {"id": 24, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message", "seen": False},
-                {"id": 25, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message", "seen": False},
-                {"id": 26, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message", "seen": False},
-                {"id": 27, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message", "seen": False},
-                {"id": 28, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message", "seen": False},
-                {"id": 29, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message", "seen": False},
-                {"id": 30, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message", "seen": False},
-                {"id": 31, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message", "seen": False},
-                {"id": 32, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message", "seen": False},
-                {"id": 33, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message", "seen": False},
-                {"id": 34, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message", "seen": False},
-                {"id": 35, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message", "seen": False},
-                {"id": 36, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message", "seen": False},
-                {"id": 37, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message", "seen": False},
-                {"id": 38, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message", "seen": False},
-                {"id": 39, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message", "seen": False},
-                {"id": 40, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message", "seen": False},
-                {"id": 41, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message", "seen": False},
-                {"id": 42, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message", "seen": False},
-                {"id": 43, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message", "seen": False}]
+listMessages = []
 
+# DEV AREA #
+if(DEVMODE):
+    with open("test/messageTest.json", "r") as f:
+        listMessages = json.load(f)
+# DEV AREA #
+#  
 ###
 # Rate Limit
 ###
@@ -190,6 +156,9 @@ def poll():
     # Verify Parameter
     pagesNumber = math.ceil(len(listMessages)/maxMessages)
     page = pagesNumber if (page > pagesNumber) else page
+    if(page == 0):
+        page = 1
+        pagesNumber = 1
     # Computing id values
     startingId = (page-1) * maxMessages
     endingId = (page * maxMessages) # Not included, so minus id-1 on JSON
@@ -200,5 +169,12 @@ def poll():
 # Main Script
 ###
 if __name__ == "__main__":
-    app.run(host="0.0.0.0",debug=True, threaded=True)
+    DEBUG_MODE = False
+    HOST = "0.0.0.0"
+    # DEV AREA #
+    if(DEVMODE):
+        DEBUG_MODE = True
+        HOST = "127.0.0.1"
+    # DEV AREA #
+    app.run(host=HOST, port=SERVER_PORT, debug=DEBUG_MODE, threaded=True)
  
