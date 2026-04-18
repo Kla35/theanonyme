@@ -90,11 +90,25 @@
     let page = 1;
     let newPage = 1; 
     let messageIdOnPage = [];
+    let timer;
 
 
     /*********************
-    * Polling Functions
+    * Polling & Polling Timer Functions
     **********************/
+    function schedulePoll() {
+      clearTimeout(timer);
+        timer = setTimeout(async () => {
+            await poll();
+            schedulePoll();
+        }, 2000);
+    }
+
+    async function triggerPoll(){ /* I'm sure there is a way to simplify these 2 functions, but the brain hasn't found yet :( */
+      clearTimeout(timer);
+      await poll();
+      schedulePoll();
+    }
 
     async function poll() {
       // Polling
@@ -123,8 +137,10 @@
     **********************/
 
     function appendRow(item) { 
+      let checkbox = "";
       const divRow = document.createElement('div');
       divRow.setAttribute("id", `cardMessage_${item.id}`);
+      if(item.seen) { divRow.classList.add("alreadySeenMessage"); checkbox="checked" }
       divRow.classList.add('card');
       divRow.classList.add('card-body');
       divRow.innerHTML = `
@@ -134,7 +150,7 @@
             <div class="col-3 col-md-2">${item.time}</div>
             <div class="col-4 col-md-7">${formatText(item.title || '—')}</div>
             <div class="col-2 col-md-1" style="display:flex; justify-content: space-evenly; align-items: center;">
-              <input class="form-check-input" type="checkbox" value="" id="checkMessage_${item.id}" checkboxMessageId="${item.id}" style="-webkit-transform: scale(2);" onchange="alreadyReadMessage(this)"">
+              <input class="form-check-input" type="checkbox" ${checkbox} value="" id="checkMessage_${item.id}" checkboxMessageId="${item.id}" style="-webkit-transform: scale(2);" onchange="alreadyReadMessage(this)"">
             </div>
             <div class="col-2 col-md-1" style="display:flex; justify-content: space-evenly; align-items: center;">
               <a class="btn btn-primary" data-bs-toggle="collapse" href="#collapseMessage_${item.id}" role="button" aria-expanded="false">▼</a>
@@ -164,7 +180,7 @@
             <span class="visually-hidden">Loading...</span>
           </div>
         `;
-        poll();
+        triggerPoll();
       }
     }
 
@@ -216,6 +232,11 @@
       } else {
         domCard.classList.remove("alreadySeenMessage")
       }
+      fetch(`/messages/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ seen: domElement.checked })
+      });
     }
     
     /*********************
@@ -232,9 +253,7 @@
     /*********************
     * General
     **********************/
-  
-    poll();
-    intervalPoll = setInterval(poll, 2000);
+    triggerPoll();
 
     // if(pageId)
   </script>

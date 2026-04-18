@@ -32,50 +32,50 @@ app.secret_key = SECRET_KEY
 # Var
 ###
 messages_lock = threading.Lock()
-listMessages = [{"id": 0, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message"},
-                {"id": 1, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message"},
-                {"id": 2, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message"},
-                {"id": 3, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message"},
-                {"id": 4, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message"},
-                {"id": 5, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message"},
-                {"id": 6, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message"},
-                {"id": 7, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message"},
-                {"id": 8, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message"},
-                {"id": 9, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message"},
-                {"id": 10, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message"},
-                {"id": 11, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message"},
-                {"id": 12, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message"},
-                {"id": 13, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message"},
-                {"id": 14, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message"},
-                {"id": 15, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message"},
-                {"id": 16, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message"},
-                {"id": 17, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message"},
-                {"id": 18, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message"},
-                {"id": 19, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message"},
-                {"id": 20, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message"},
-                {"id": 21, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message"},
-                {"id": 22, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message"},
-                {"id": 23, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message"},
-                {"id": 24, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message"},
-                {"id": 25, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message"},
-                {"id": 26, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message"},
-                {"id": 27, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message"},
-                {"id": 28, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message"},
-                {"id": 29, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message"},
-                {"id": 30, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message"},
-                {"id": 31, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message"},
-                {"id": 32, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message"},
-                {"id": 33, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message"},
-                {"id": 34, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message"},
-                {"id": 35, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message"},
-                {"id": 36, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message"},
-                {"id": 37, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message"},
-                {"id": 38, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message"},
-                {"id": 39, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message"},
-                {"id": 40, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message"},
-                {"id": 41, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message"},
-                {"id": 42, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message"},
-                {"id": 43, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message"}]
+listMessages = [{"id": 0, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message", "seen": True},
+                {"id": 1, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message", "seen": False},
+                {"id": 2, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message", "seen": False},
+                {"id": 3, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message", "seen": False},
+                {"id": 4, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message", "seen": False},
+                {"id": 5, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message", "seen": False},
+                {"id": 6, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message", "seen": False},
+                {"id": 7, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message", "seen": False},
+                {"id": 8, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message", "seen": False},
+                {"id": 9, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message", "seen": False},
+                {"id": 10, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message", "seen": False},
+                {"id": 11, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message", "seen": False},
+                {"id": 12, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message", "seen": False},
+                {"id": 13, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message", "seen": False},
+                {"id": 14, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message", "seen": False},
+                {"id": 15, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message", "seen": False},
+                {"id": 16, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message", "seen": False},
+                {"id": 17, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message", "seen": False},
+                {"id": 18, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message", "seen": False},
+                {"id": 19, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message", "seen": False},
+                {"id": 20, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message", "seen": False},
+                {"id": 21, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message", "seen": False},
+                {"id": 22, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message", "seen": False},
+                {"id": 23, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message", "seen": False},
+                {"id": 24, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message", "seen": False},
+                {"id": 25, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message", "seen": False},
+                {"id": 26, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message", "seen": False},
+                {"id": 27, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message", "seen": False},
+                {"id": 28, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message", "seen": False},
+                {"id": 29, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message", "seen": False},
+                {"id": 30, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message", "seen": False},
+                {"id": 31, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message", "seen": False},
+                {"id": 32, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message", "seen": False},
+                {"id": 33, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message", "seen": False},
+                {"id": 34, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message", "seen": False},
+                {"id": 35, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message", "seen": False},
+                {"id": 36, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message", "seen": False},
+                {"id": 37, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message", "seen": False},
+                {"id": 38, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message", "seen": False},
+                {"id": 39, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message", "seen": False},
+                {"id": 40, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message", "seen": False},
+                {"id": 41, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message", "seen": False},
+                {"id": 42, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message", "seen": False},
+                {"id": 43, "time": datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"), "title": "test", "message": "message", "seen": False}]
 
 ###
 # Rate Limit
@@ -111,7 +111,7 @@ def index():
 def submit():
     global listMessages
     global messages_lock
-    print(get_remote_address())
+
     data    = request.get_json(force=True, silent=True) or {}
     title   = str(data.get("title", "")).strip()[:300]
     message = str(data.get("message", "")).strip()[:5000]
@@ -127,12 +127,30 @@ def submit():
             "id":      new_id,
             "time":    datetime.now(zoneinfo.ZoneInfo("Europe/Paris")).strftime("%H:%M:%S"),
             "title":   title,
-            "message": message
+            "message": message,
+            "seen": False
         })
 
     return jsonify({"ok": True, "id": new_id})
  
-@app.route("/messages")
+@app.route("/messages/<messageId>", methods=["PATCH"])
+def patchMessages(messageId):
+    # If not logged => Not access
+    if not session.get("logged"):
+        return {}, 403
+    
+    global listMessages
+    global messages_lock
+    
+    data    = request.get_json(force=True, silent=True) or {}
+    seen   = str(data.get("seen", "")).strip()
+ 
+    with messages_lock:
+        listMessages[int(messageId)]["seen"] = True if (seen == "True") else False
+
+    return jsonify({"ok": True})
+
+@app.route("/messages", methods=["GET"])
 def messages():
     if not session.get("logged"):
         return redirect(url_for("login"))
