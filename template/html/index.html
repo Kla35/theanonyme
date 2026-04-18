@@ -82,6 +82,8 @@
         document.getElementById('title').value = '';
         document.getElementById('message').value = '';
         btn.disabled = true;
+        let data = await res.json()
+        document.getElementById('divForm').innerHTML = `<h2>Votre message a bien été envoyé, merci ! Elle a été référencé en tant qu'anecdote #${data.id}`;
       } else {
         alert.className   = 'alert alert-danger';
         btn.disabled = false;
