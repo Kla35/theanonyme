@@ -19,45 +19,21 @@
     --bs-btn-disabled-bg: #AA43FF;
     --bs-btn-disabled-border-color: #AA43FF;
 }
+
+/* Common */
+
+.pointer{
+  cursor: pointer;
+}
+
 /* Body base */
 body {
-  background: var(--bg);
-  color: var(--text);
   font-family: system-ui, sans-serif;
   font-size: 15px;
   line-height: 1.5;
 }
 
-header{width: 100%; height: 100px;}
-
-/*  */
-#appWrapper {
-  height: calc(100vh - 100px);
-  overflow: hidden;
-}
-
-#mainContent {
-  min-width: 0;          /* important : évite que flex déborde */
-  transition: flex 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.side-panel {
-  width: 0;
-  overflow: hidden;
-  flex-shrink: 0;
-  transition: width 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-  border-left: 1px solid rgba(0,0,0,.1);
-  position: sticky;      /* reste fixée verticalement */
-  top: 0;
-  height: 100%;
-}
-
-.side-panel.open {
-  width: 600px;         /* 4 col / 12 = 33.33% */
-  max-width: 30%;
-}
-
-.side-panel-inner {
-  height: 100%;
-  overflow-y: auto;
+header{
+  width: 100%; 
+  height: 100px;
 }

@@ -4,28 +4,66 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Thé Anonyme</title>
-  <link rel="stylesheet" href="/static/style.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+  <link rel="stylesheet" href="/static/css/common.css">
+  <link rel="stylesheet" href="/static/css/home.css">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+  <script src="https://kit.fontawesome.com/fff07aaee2.js" crossorigin="anonymous"></script>
 </head>
 <body>
-  <main class="card">
-    <h1>Envoyer un message</h1>
+  
+  <main>
+    <br/>
+    <header>
+      <div class="container-fluid" style="height: 100%">
+        <div class="row mb-3 text-center" style="height: 100%">
+          <div class="offset-1 col-10 offset-md-2 col-md-8 offset-xxl-3 col-xxl-6" style="height: 100%">
+            <div style="height:100%; width: 100%; background: center / contain no-repeat url('/static/img/theanonyme.png')"></div>
+          </div>    
+        </div>
+      </div>
+    </header>
+    <div class="container-fluid" style="height: 100%">
+      <div class="row mb-3" style="height: 100%">
+        <div class="offset-1 col-10 offset-md-2 col-md-8 offset-xxl-3 col-xxl-6" style="height: 100%">
+          <div class="card">
+            <h3 class="text-center">Avant d'effectuer ta contribution, sois sûr.e que :</h3>
+            <ul>
+              <li>Qu'elle peut être partagé de manière suffisamment anonyme</li>
+              <li>Qu'elle ne soit pas un trauma dump : L'idée reste d'avoir une safe place afin de tous en profiter, et de ne pas réveiller des triggers chez d'autres gens</li>
+              <li>Qu'elle soit lisable en stream (du moins, qu'elle respecte les CGU de Twitch)</li>
+            </ul>
 
-    <label for="title">Sujet *</label>
-    <input type="text" id="title" placeholder="Un thé impressionant">
+          </div>
+        </div>    
+      </div>
+      <div class="row mb-3 text-center" style="height: 100%; padding-bottom: 50px;">
+        <div class="offset-1 col-10 offset-md-2 col-md-8 offset-xxl-3 col-xxl-6" style="height: 100%">
+          <div id="divForm" class="card">
+            <h1>Envoyer un thé</h1>
 
-    <label for="message">Message</label>
-    <textarea id="message" placeholder="Le mari de la femme du cousin de la fille du grand père de ma mère a..."></textarea>
-
-    <button id="send-btn" onclick="sendForm()">Envoyer</button>
-
-    <p class="toast" id="toast"></p>
+            <div class="mb-3">
+              <label for="title" class="form-label">Sujet *</label>
+              <input type="text" class="form-control" id="title" placeholder="Un thé impressionant">
+            </div>
+            <div class="mb-3">
+              <label for="message" class="form-label">Message *</label>
+              <textarea id="message" class="form-control" placeholder="L'anecdote démarre quand le mari de ma tante du cousin de la fille de mon oncle du grand père de ma mère a..." style="height: 270px;"></textarea>
+            </div>
+            <p id="alert"></p>
+            <button id="send-btn" onclick="sendForm()" class="btn btn-primary">Envoyer</button>
+          </div>
+        </div>    
+      </div>
+    </div>
+    
   </main>
 
   <script>
     async function sendForm() {
       const title = document.getElementById('title').value.trim();
       const message = document.getElementById('message').value.trim();
-      const toast = document.getElementById('toast');
+      const alert = document.getElementById('alert');
       const btn = document.getElementById('send-btn');
 
       if (!title) { document.getElementById('title').focus(); return; }
@@ -39,25 +77,23 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ title, message })
       });
-      console.log(res.status)
+
       if (res.ok) {
         document.getElementById('title').value = '';
         document.getElementById('message').value = '';
-        toast.textContent = '✓ Message envoyé !';
-        toast.className   = 'toast ok';
-        setTimeout(() => toast.className = 'toast', 3000);
-        
+        btn.disabled = true;
       } else {
-        toast.className   = 'toast err';
+        alert.className   = 'alert alert-danger';
+        btn.disabled = false;
+        btn.textContent = 'Envoyer';
         if(res.status == 429) {
-          toast.textContent = 'Vous avez déjà envoyé un thé il y a moins d\'une minute !';
+          alert.textContent = 'Vous avez déjà envoyé un thé il y a moins d\'une minute !';
         } else {
-          toast.textContent = 'Erreur, veuillez réessayer.';
+          alert.textContent = 'Erreur, veuillez réessayer.';
         }
       }
 
-      btn.disabled = false;
-      btn.textContent = 'Envoyer';
+      
     }
   </script>
 </body>

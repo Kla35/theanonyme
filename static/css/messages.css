@@ -1,0 +1,39 @@
+/* Messages Card*/
+.alreadySeenMessage{
+  opacity: 0.6;
+  background: #0080005e;
+}
+
+/* Wrapper & Side-Panel */
+#appWrapper {
+  height: calc(100vh - 100px);
+  overflow: hidden;
+}
+
+#mainContent {
+  min-width: 0;
+  transition: flex 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.side-panel {
+  width: 0;
+  overflow: hidden;
+  flex-shrink: 0;
+  transition: width 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  border-left: 1px solid rgba(0,0,0,.1);
+  position: sticky;
+  top: 0;
+  height: 100%;
+}
+
+.side-panel.open {
+  width: 600px;
+  max-width: 30%;
+}
+
+.side-panel-inner {
+  height: 100%;
+  overflow-y: auto;
+}
+
+
